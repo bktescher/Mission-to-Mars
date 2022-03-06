@@ -1,15 +1,15 @@
 
 #dependencies
-import pandas as pd
 from splinter import Browser
 from bs4 import BeautifulSoup as soup
-from webdriver_manager.chrome import ChromeDriverManager
+import pandas as pd
 import datetime as dt
+from webdriver_manager.chrome import ChromeDriverManager
 
 def scrape_all():
     #Initiate headless driver for deployment
     executable_path= {'executable_path': ChromeDriverManager().install()}
-    browser= Browser('chrome', **executable_path, headless=False)
+    browser= Browser('chrome', **executable_path, headless=True)
 
     news_title, news_paragraph= mars_news(browser)
 
@@ -32,7 +32,7 @@ def mars_news(browser):
     browser.visit(url)
 
     #optional delay for loading the page
-    browser.is_element_not_present_by_css('div.list_text', wait_time=1)
+    browser.is_element_present_by_css('div.list_text', wait_time=1)
 
     #Convert the browser html to a soup object and then quit the browser
     html= browser.html
@@ -52,10 +52,6 @@ def mars_news(browser):
         return None, None
     
     return news_title, news_p
-
-
- #[markdown]
-# ### JPL Space Images Featured Image
 
 def featured_image(browser):
     #visit url
